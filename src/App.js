@@ -9,13 +9,21 @@ function App() {
   const addNewTransaction = (e) => {
     e.preventDefault();
     const url = process.env.REACT_APP_API_URL + "/transaction";
-    console.log(url);
+    const price = name.split(" ")[0];
     fetch(url, {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ name, description, datetime }),
+      body: JSON.stringify({
+        price,
+        name: name.substring(price.length + 1),
+        description,
+        datetime,
+      }),
     }).then((res) => {
       res.json().then((json) => {
+        setName("");
+        setDatetime("");
+        setDescription("");
         console.log("result", json);
       });
     });
@@ -37,7 +45,7 @@ function App() {
           <input
             type='datetime-local'
             value={datetime}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setDatetime(e.target.value)}
           />
         </div>
         <div className='description'>
@@ -45,7 +53,7 @@ function App() {
             type='text'
             placeholder='description'
             value={description}
-            onChange={(e) => e.target.value}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <button type='submit'>Add new transaction</button>
