@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -11,13 +11,14 @@ function App() {
     getTransactions().then((transactions) => {
       setTransactions(transactions);
     });
-  }, []);
+  }, [transactions]);
 
   const getTransactions = async () => {
     const url = process.env.REACT_APP_API_URL + "/transactions";
     const response = await fetch(url);
     return await response.json();
   };
+
   const addNewTransaction = (e) => {
     e.preventDefault();
     const url = process.env.REACT_APP_API_URL + "/transaction";
